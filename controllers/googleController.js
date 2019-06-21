@@ -1,5 +1,6 @@
 const axios = require("axios");
 const db = require("../models");
+require('dotenv').config()
 
 // Defining methods for the googleController
 
@@ -8,12 +9,11 @@ const db = require("../models");
 // It also makes sure that the books returned from the API all contain a title, author, link, description, and image
 module.exports = {
   findAll: function(req, res) {
-    const { query: params } = req;
+    const q = req.query.q;
     axios
-      .get("https://www.googleapis.com/books/v1/volumes", {
-        params
-      })
-      .then(results =>
+      .get("https://www.googleapis.com/books/v1/volumes?/volumes?q="  + q + "&key=" + process.env.GBOOKS )
+      .then(results => {
+        console.log(results)
         results.data.items.filter(
           result =>
             result.volumeInfo.title &&
@@ -23,6 +23,7 @@ module.exports = {
             result.volumeInfo.imageLinks &&
             result.volumeInfo.imageLinks.thumbnail
         )
+      }
       )
       .then(apiBooks =>
         db.Book.find().then(dbBooks =>
