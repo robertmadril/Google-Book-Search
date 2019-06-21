@@ -1,5 +1,6 @@
-import React from "react";
+import React, {Component} from "react";
 import Results from "../components/Results";
+import API from "../utils/API"
 
 class Saved extends Component {
     state = {
@@ -12,10 +13,12 @@ class Saved extends Component {
 
     getSavedBooks = () => {
         API.getSavedBooks()
-            .then(res =>
+            .then(res => {
+                console.log(res.data)
                 this.setState({
                     books: res.data
                 })
+            }
             )
             .catch(err => console.log(err));
     };
@@ -30,12 +33,19 @@ class Saved extends Component {
                 {this.state.books.map(book => (
                     <Results
                         key={book.id}
-                        title={book.volumeInfo.title}
-                        subtitle={book.volumeInfo.subtitle}
-                        link={book.volumeInfo.infoLink}
-                        authors={book.volumeInfo.authors.join(", ")}
-                        description={book.volumeInfo.description}
-                        image={book.volumeInfo.imageLinks.thumbnail}
+                        title={book.title}
+                        link={book.link}
+                        authors={book.author}
+                        description={book.description}
+                        image={book.image}
+                        Button={() => (
+                            <button
+                              onClick={() => this.handleBookDelete(book.id)}
+                              className="btn btn-primary ml-2"
+                            >
+                              Delete
+                            </button>
+                          )}
                     />
                 ))}
             </div>

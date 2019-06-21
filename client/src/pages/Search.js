@@ -18,10 +18,11 @@ class Search extends Component {
 
     getBooks = () => {
         API.getBooks(this.state.q)
-            .then(res =>
+            .then(res => {
                 this.setState({
                     books: res.data
                 })
+            }
             )
             .catch(() =>
                 this.setState({
@@ -46,7 +47,6 @@ class Search extends Component {
             link: book.volumeInfo.infoLink,
             authors: book.volumeInfo.authors,
             description: book.volumeInfo.description,
-            image: book.volumeInfo.imageLinks.thumbnail
         }).then(() => this.getBooks());
     };
 
@@ -58,26 +58,26 @@ class Search extends Component {
                     handleFormSubmit={this.handleFormSubmit}
                     q={this.state.q} />
                 <div>
-                  {this.state.books.map(book => (
-                    <Results
-                      key={book.id}
-                      title={book.volumeInfo.title}
-                      subtitle={book.volumeInfo.subtitle}
-                      link={book.volumeInfo.infoLink}
-                      authors={book.volumeInfo.authors.join(", ")}
-                      description={book.volumeInfo.description}
-                      image={book.volumeInfo.imageLinks.thumbnail}
-                      Button={() => (
-                        <button
-                          onClick={() => this.handleBookSave(book.id)}
-                          className="btn btn-primary ml-2"
-                        >
-                          Save
-                        </button>
-                      )}
+                    {this.state.books.map(book => (
+                        <Results
+                        key={book.id}
+                        title={book.volumeInfo.title}
+                        subtitle={book.volumeInfo.subtitle}
+                        link={book.volumeInfo.infoLink}
+                        authors={book.volumeInfo.authors.join(", ")}
+                        description={book.volumeInfo.description}
+                        Button={() => (
+                          <button
+                            onClick={() => this.handleBookSave(book.id)}
+                            className="btn btn-primary ml-2"
+                          >
+                            Save
+                          </button>
+                        )}
                     />
-                  ))}
-                  </div>
+
+                    ))}
+                </div>
 
             </div>
         )
